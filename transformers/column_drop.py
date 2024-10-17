@@ -17,7 +17,6 @@ class DropLowVarianceCategorical(BaseEstimator, TransformerMixin): #drop categor
         self.columns_to_drop=[]
     def fit(self,X,y=None):
         for col in X.select_dtypes(include=['object','category']).columns:
-            print(col)
             top_cat_percentage = X[col].value_counts(normalize=True).max() 
             if top_cat_percentage > self.threshold:
                 if(col != 'target'):
@@ -27,13 +26,13 @@ class DropLowVarianceCategorical(BaseEstimator, TransformerMixin): #drop categor
         return X.drop(columns = self.columns_to_drop)
     
 class DropHighCardinality(BaseEstimator,TransformerMixin): #drop categorical columns that have >50% unique values
-    def __init__(self, threshold=0.5):
+    def __init__(self, threshold=0.3):
         self.threshold=threshold
         self.columns_to_drop=[]
     def fit(self,X,y=None):
         for col in X.select_dtypes(include=['object','category']).columns:
             unique_count = X[col].nunique()
-            total_count = X['col'].count() 
+            total_count = X[col].count() 
             unique_percentage = unique_count/total_count
             if unique_percentage > self.threshold:
                 self.columns_to_drop.append(col)
@@ -57,3 +56,4 @@ class CustomLabelEncoder(BaseEstimator, TransformerMixin):
         for column, le in self.encoders.items():
             X_encoded[column] = le.transform(X[column])
         return X_encoded
+   
