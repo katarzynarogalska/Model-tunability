@@ -54,6 +54,8 @@ class CustomLabelEncoder(BaseEstimator, TransformerMixin):
     def transform(self, X):
         X_encoded = X.copy()
         for column, le in self.encoders.items():
-            X_encoded[column] = le.transform(X[column])
+            X_encoded[column] = le.transform(X[column]) 
+            unknown_mask = ~X[column].isin(le.classes_)  # Znajdź nieznane etykiety
+            X_encoded[column][unknown_mask] = -1
         return X_encoded
    
