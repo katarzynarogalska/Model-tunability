@@ -40,22 +40,28 @@ class DropHighCardinality(BaseEstimator,TransformerMixin): #drop categorical col
     def transform(self,X,y=None):
         return X.drop(columns=self.columns_to_drop)
     
-class CustomLabelEncoder(BaseEstimator, TransformerMixin):
-    def __init__(self):
-        self.encoders = {}
+# class CustomLabelEncoder(BaseEstimator, TransformerMixin):
+#     def __init__(self):
+#         self.encoders = {}
 
-    def fit(self, X, y=None):
-        for column in X.columns:
-            le = LabelEncoder()
-            le.fit(X[column])
-            self.encoders[column] = le
-        return self
+#     def fit(self, X, y=None):
+#         for column in X.columns:
+#             le = LabelEncoder()
+#             le.fit(X[column].fillna('Other'))  # Zastąp brakujące wartości na 'Other'
+#             self.encoders[column] = le
+#         return self
 
-    def transform(self, X):
-        X_encoded = X.copy()
-        for column, le in self.encoders.items():
-            X_encoded[column] = le.transform(X[column]) 
-            unknown_mask = ~X[column].isin(le.classes_)  # Znajdź nieznane etykiety
-            X_encoded[column][unknown_mask] = -1
-        return X_encoded
+#     def transform(self, X):
+#         X_encoded = X.copy()
+#         for column, le in self.encoders.items():
+#             # Zastępujemy brakujące wartości 'Other'
+#             X_encoded[column] = le.transform(X[column].fillna('Other'))
+
+#             # Sprawdzamy, które wartości są nieznane
+#             unknown_mask = ~X[column].isin(le.classes_)
+#             if unknown_mask.any():
+#                 # Dla nieznanych etykiet przypisz wartość, np. -1
+#                 X_encoded[column][unknown_mask] = -1
+
+#         return X_encoded
    
