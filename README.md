@@ -22,8 +22,6 @@ Here you may find a quick description of preprocessing techniques used for this 
 * Missing values imputing - we chose 'most frequent' strategy for imputing missing values
 
 **for numerical columns:**
-
-* Binning - we are binning numerical columns based on kmeans strategy
 * Missing values imputing - we chose 'median' strategy for imputing missng values
 
 **all columns:**
