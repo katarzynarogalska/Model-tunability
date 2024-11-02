@@ -1,45 +1,61 @@
-from sklearn.base import BaseEstimator,TransformerMixin
+from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.preprocessing import LabelEncoder
 
-class DropMissing(BaseEstimator,TransformerMixin): #drop columns that have >50% NaN
+
+class DropMissing(BaseEstimator, TransformerMixin):  # drop columns that have >50% NaN
     def __init__(self, threshold=0.5):
         self.threshold = threshold
-        self.columns_missing =[]
-    def fit(self,X,y=None):
-        self.columns_missing = [col for col in X.columns if X[col].isna().mean() > self.threshold] 
+        self.columns_missing = []
+
+    def fit(self, X, y=None):
+        self.columns_missing = [
+            col for col in X.columns if X[col].isna().mean() > self.threshold
+        ]
         return self
+
     def transform(self, X, y=None):
-        return X.drop(columns= self.columns_missing)
-    
-class DropLowVarianceCategorical(BaseEstimator, TransformerMixin): #drop categorical columns where more than 95% of rows have the same value 
+        return X.drop(columns=self.columns_missing)
+
+
+class DropLowVarianceCategorical(
+    BaseEstimator, TransformerMixin
+):  # drop categorical columns where more than 95% of rows have the same value
     def __init__(self, threshold=0.95):
-        self.threshold=threshold
-        self.columns_to_drop=[]
-    def fit(self,X,y=None):
-        for col in X.select_dtypes(include=['object','category']).columns:
-            top_cat_percentage = X[col].value_counts(normalize=True).max() 
+        self.threshold = threshold
+        self.columns_to_drop = []
+
+    def fit(self, X, y=None):
+        for col in X.select_dtypes(include=["object", "category"]).columns:
+            top_cat_percentage = X[col].value_counts(normalize=True).max()
             if top_cat_percentage > self.threshold:
-                if(col != 'target'):
-                    self.cols_to_drop_.append(col)
+                if col != "target":
+                    self.columns_to_drop.append(col)
         return self
-    def transform(self,X,y=None):
-        return X.drop(columns = self.columns_to_drop)
-    
-class DropHighCardinality(BaseEstimator,TransformerMixin): #drop categorical columns that have >50% unique values
+
+    def transform(self, X, y=None):
+        return X.drop(columns=self.columns_to_drop)
+
+
+class DropHighCardinality(
+    BaseEstimator, TransformerMixin
+):  # drop categorical columns that have >50% unique values
     def __init__(self, threshold=0.3):
-        self.threshold=threshold
-        self.columns_to_drop=[]
-    def fit(self,X,y=None):
-        for col in X.select_dtypes(include=['object','category']).columns:
+        self.threshold = threshold
+        self.columns_to_drop = []
+
+    def fit(self, X, y=None):
+        for col in X.select_dtypes(include=["object", "category"]).columns:
             unique_count = X[col].nunique()
-            total_count = X[col].count() 
-            unique_percentage = unique_count/total_count
+            total_count = X[col].count()
+            unique_percentage = unique_count / total_count
             if unique_percentage > self.threshold:
                 self.columns_to_drop.append(col)
         return self
-    def transform(self,X,y=None):
+
+    def transform(self, X, y=None):
         return X.drop(columns=self.columns_to_drop)
-    
+
+
 # class CustomLabelEncoder(BaseEstimator, TransformerMixin):
 #     def __init__(self):
 #         self.encoders = {}
@@ -64,4 +80,3 @@ class DropHighCardinality(BaseEstimator,TransformerMixin): #drop categorical col
 #                 X_encoded[column][unknown_mask] = -1
 
 #         return X_encoded
-   
