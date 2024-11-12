@@ -88,13 +88,13 @@ Tunability is an aggregation of the differences in model performance on best par
 We can see that conclusions are very simiar for both Grid Search and Bayes Search.
 
 ## Methods stability
-We also checked how both of the sampling methids differ. How many iterations they need to find the best parameters? How long does it take to search through the param grid ? How each methos finds the parameters? Plots below show max AUC found so far vs the number of iteration for every model and sampling method. We can see that while GS need around 80-100 iterations to achieve the best AUC, BS needs only 4-10.
+We also checked how both of the sampling methods differ. How many iterations do they need to find the best parameters? How long does it take to search through the param grid ? How each method finds the parameters? Plots below show max AUC found so far vs the number of iterations for every model and sampling method. We can see that while GS need around 20-100 iterations to achieve the best AUC, BS needs only 4-10.
 
 ![Opis obrazu](/saved_plots/1.png)
 ![Opis obrazu](/saved_plots/2.png)
 ![Opis obrazu](/saved_plots/3.png)
 
-We were also interested in how each iteration works for GS and BS. As we didn't notice any differences for most of the datasets, here are 2 plots that were more interesing:
+We were also interested in how each iteration works in GS and BS. As we didn't notice any differences for most of the datasets, here are 2 plots that were more interesting:
 
 ![Opis obrazu](/saved_plots/4.png)
 ![Opis obrazu](/saved_plots/5.png)
